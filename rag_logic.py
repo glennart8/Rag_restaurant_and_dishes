@@ -63,21 +63,7 @@ def extract_entities_llm(prompt: str) -> dict:
         )
     )
     
-    return response.text
-
-def get_user_query_llm(prompt: str):
-    data = extract_entities_llm(prompt)
-    data = json.loads(data)
-    
-    # Hämta alla fält. Använd .get() för att säkra mot KeyErrors
-    restaurant_name = data.get("name")
-    city = data.get("city")
-    cuisine = data.get("cuisine")
-    dishes = data.get("dishes") or []
-    drinks = data.get("drinks") or []
-    menu = (dishes or []) + (drinks or [])
-    
-    
+    return response.text  
     
 
 # --- USER QUERY LOGIC ---
@@ -206,7 +192,8 @@ def vectorize_fn(text_or_list):
     
     
 if __name__ == "__main__":
-    prompt = "Jag vill äta kinesiskt, gärna mapo tofu i Göteborg"
+    #prompt = "Jag vill äta kinesiskt, gärna mapo tofu i Göteborg"
+    prompt = "Jag vill äta ryggbiff och dricka en öl i göteborg,"
 
     data = extract_entities_llm(prompt)
     data = json.loads(data)
@@ -224,10 +211,10 @@ if __name__ == "__main__":
 
     print(f"Söker med {data.get("city")} {data.get("dishes")}")
     print(f"{data.get("cuisine")} {data.get("name")} {data.get("drinks")}")
-    # Borde ta bort restaurang och city och separera meny till dish och drinks
-    if menu:
-        vectors.append(("vector_menu", vectorize_fn(menu)))
-        weights.append(0.7)
+    print(f"{menu=}")    # Borde ta bort restaurang och city och separera meny till dish och drinks
+    # if drinks and dishes:
+    #     vectors.append(("vector_menu", vectorize_fn(menu)))
+    #     weights.append(0.7)
     if city:
         vectors.append(("vector_city", vectorize_fn(city)))
         weights.append(0.3)
@@ -237,6 +224,14 @@ if __name__ == "__main__":
     if restaurant_name:
         vectors.append(("vector_restaurant", vectorize_fn(restaurant_name)))
         weights.append(0.3)
+    if menu:
+        if drinks:
+            vectors.append(("vector_drinks", vectorize_fn(drinks)))
+            weights.append(0.2)
+        if dishes:
+            vectors.append(("vector_dishes", vectorize_fn(dishes)))
+            weights.append(0.7)
+    
 
     # Normalisera vikter
     total = sum(weights)

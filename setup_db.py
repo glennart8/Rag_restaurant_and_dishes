@@ -4,20 +4,8 @@ from sentence_transformers import SentenceTransformer
 from restaurant_data import RAW_RESTAURANT_DATA
 import json
 
-# EMBEDDING_MODEL_NAME = 'all-MiniLM-L6-v2'
-# embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
 DB_PATH = "restaurants_and_food_db"
 model = SentenceTransformer('all-MiniLM-L6-v2')
-
-df = pd.DataFrame(RAW_RESTAURANT_DATA)
-
-# Vektorisera beskrivningstexten
-# print("Skapar vektorer...")
-# df["menu_text"] = df["menu"].apply(lambda m: " ".join(m.get("dishes", []) + m.get("drinks", [])))
-# df["vector_menu"] = df["menu_text"].apply(lambda x: embedding_model.encode(x).tolist())
-# df["vector_city"] = df["city"].apply(lambda x: embedding_model.encode(x).tolist())
-# df["vector_cuisine"] = df["cuisine"].apply(lambda x: embedding_model.encode(x).tolist())
-# df["vector_restaurant"] = df["name"].apply(lambda x: embedding_model.encode(x).tolist())
 
 # Skapa vektor
 lancedb_data = []
