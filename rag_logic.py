@@ -3,7 +3,9 @@ from dotenv import load_dotenv
 import lancedb
 from sentence_transformers import SentenceTransformer
 from google import genai
-import numpy as np
+
+from models import PromptStructure
+from google.genai import types
 
 # Implementera LLM för at tutvinna väsentlig information, typ stad, maträtt, typ av kök
 """
@@ -28,6 +30,40 @@ client = genai.Client(api_key=GEMINI_API_KEY)
 embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
 db = lancedb.connect(DB_PATH)
 table = db.open_table("restaurants_db")
+
+
+def extract_entities_llm(prompt: str) -> dict:
+    system_instruction = (
+        """
+        Din uppgift är att agera som dataextraktionsexpert.
+        Du ska extrahera fälten 'maträtt', 'dryck', 'typ av kök', 'stad' och 'restaurang' från texten och svara som JSON.
+        Om någon av fälten inte finns med i texten lämna den tom.
+        
+        #Format
+        {
+            name: "restaurang",
+            city: "stad",
+            cuisine: "typ av kök",
+            dish: "maträtt",
+            drink: "dryck"
+        }
+        """
+    )
+    
+    response = client.models.generate_content(
+        model=MODEL_NAME,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            system_instruction=system_instruction,
+            response_mime_type="application/json",
+            response_schema=PromptStructure
+        )
+    )
+    
+    print(response.text)
+    return response
+
+
 
 
 # --- USER QUERY LOGIC ---
@@ -125,3 +161,7 @@ def vectorize(search_query: str):
     best = min(results, key=lambda r: r.get("_distance", 1.0))
     record = best
     return record
+
+if __name__ == "__main__":
+    prompt = "Jag vill äta kinesiskt i Göteborg"
+    extract_entities_llm(prompt)
