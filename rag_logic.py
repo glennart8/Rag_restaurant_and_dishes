@@ -5,7 +5,14 @@ from sentence_transformers import SentenceTransformer
 from google import genai
 import numpy as np
 
-# Implementera LLM
+# Implementera LLM för at tutvinna väsentlig information, typ stad, maträtt, typ av kök
+"""
+1. En metod som tar in en query och skickar den till LLM
+2. En instruktion där vi berättar till llm vad vi vill ha, i json
+3. Uppdatera vektorer i databasen, en / attribut vi vill få ut
+4. Först kollar vi mot databasen, om inget hittas - kolla mot vektordatabas
+"""
+
 # Validering med Pydantic och BaseModel-klasser
 # Ge resultat efter plats - google maps places, hårdkoda in ens egen location
 
@@ -68,16 +75,20 @@ def get_user_query(prompt: str) -> tuple[str | None, str | None]:
             return None, None
     
     restaurant_name = record["name"]
-
-    # Hämta maträtter från menyn från vald restaurang
-    dishes = record.get("menu", {}).get("dishes", [])
     
-    if isinstance(dishes, np.ndarray):
-        dishes = dishes.tolist()
-
+    # Slå ihop drycker och maträtter till en MENY från vald restaurang
+    try:
+        dishes = record.get("menu", {}).get("dishes", []).tolist()
+        drinks = record.get("menu", {}).get("drinks", []).tolist()
+        menu = dishes + drinks
+        
+    except Exception as e:
+        print(f"Ingen meny funnen {e}")
+        return None, None
+    
     # Kolla om någon maträtt som nämns i prompten finns i bland restaurangens maträtt
     dish_name = None
-    for dish in dishes:
+    for dish in menu:
         if dish.lower() in prompt_lower:
             dish_name = dish
             print(f"Du har beställt en {dish_name} från {restaurant_name}.")
@@ -85,10 +96,9 @@ def get_user_query(prompt: str) -> tuple[str | None, str | None]:
     
     # Om ingen maträtt nämns
     if not dish_name:
-        if dishes:
             while(True):
             # Lista möjliga maträtter
-                print(f"Maträtter som finns på {restaurant_name}: {', '.join(dishes)}")
+                print(f"Menyn på:  {restaurant_name}: {', '.join(menu)}")
                 
                 # Fråga användaren
                 dish_name_input = input(f"Vad vill du äta på {restaurant_name}? Ange maträtt: ").strip()
@@ -98,7 +108,7 @@ def get_user_query(prompt: str) -> tuple[str | None, str | None]:
                     print(f"Du har valt {restaurant_name} utan att ange maträtt.")
                     continue
                 # 
-                if dish_name_input.lower() in [d.lower() for d in dishes]:
+                if dish_name_input.lower() in [d.lower() for d in menu]:
                     # Hittar en match
                     dish_name = dish_name_input
                     print(f"Du har beställt en {dish_name} från {restaurant_name}.")
@@ -107,9 +117,6 @@ def get_user_query(prompt: str) -> tuple[str | None, str | None]:
                     # Ingen match
                     print(f"Rätten '{dish_name_input}' finns tyvärr inte.")
                     continue
-        else:
-            print(f"Du har valt {restaurant_name}. Ingen meny finns tillgänglig.")
-            dish_name = None
 
 
 def vectorize(search_query: str):
