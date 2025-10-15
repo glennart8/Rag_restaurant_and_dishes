@@ -1,11 +1,13 @@
 import os
+import json
 from dotenv import load_dotenv
 import lancedb
 from sentence_transformers import SentenceTransformer
 from google import genai
-
-from models import PromptStructure
 from google.genai import types
+from models import PromptStructure
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Implementera LLM för at tutvinna väsentlig information, typ stad, maträtt, typ av kök
 """
@@ -26,17 +28,18 @@ MODEL_NAME = "gemini-2.5-flash"
 DB_PATH = "restaurants_and_food_db"
 EMBEDDING_MODEL_NAME = 'all-MiniLM-L6-v2'
 
+# Initialiserar klienter och databas (se till att databasen/tabellen finns!)
 client = genai.Client(api_key=GEMINI_API_KEY)
 embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
 db = lancedb.connect(DB_PATH)
-table = db.open_table("restaurants_db")
+table = db.open_table("restaurants")
 
 
 def extract_entities_llm(prompt: str) -> dict:
     system_instruction = (
         """
         Din uppgift är att agera som dataextraktionsexpert.
-        Du ska extrahera fälten 'maträtt', 'dryck', 'typ av kök', 'stad' och 'restaurang' från texten och svara som JSON.
+        Du ska extrahera fälten 'maträtter', 'drycker', 'typ av kök', 'stad' och 'restaurang' från texten och svara som JSON.
         Om någon av fälten inte finns med i texten lämna den tom.
         
         #Format
@@ -44,8 +47,8 @@ def extract_entities_llm(prompt: str) -> dict:
             name: "restaurang",
             city: "stad",
             cuisine: "typ av kök",
-            dish: "maträtt",
-            drink: "dryck"
+            dishes: "maträtter",
+            drinks: "drycker"
         }
         """
     )
@@ -60,11 +63,22 @@ def extract_entities_llm(prompt: str) -> dict:
         )
     )
     
-    print(response.text)
-    return response
+    return response.text
 
-
-
+def get_user_query_llm(prompt: str):
+    data = extract_entities_llm(prompt)
+    data = json.loads(data)
+    
+    # Hämta alla fält. Använd .get() för att säkra mot KeyErrors
+    restaurant_name = data.get("name")
+    city = data.get("city")
+    cuisine = data.get("cuisine")
+    dishes = data.get("dishes") or []
+    drinks = data.get("drinks") or []
+    menu = (dishes or []) + (drinks or [])
+    
+    
+    
 
 # --- USER QUERY LOGIC ---
 def get_user_query(prompt: str) -> tuple[str | None, str | None]:
@@ -73,9 +87,6 @@ def get_user_query(prompt: str) -> tuple[str | None, str | None]:
     Returnerar alltid tuple: (restaurant_name, dish_name)
     """
     prompt = prompt.strip()
-    if not prompt:
-        print("Du måste skriva något för att fortsätta.")
-        return None, None
 
     prompt_lower = prompt.lower()
     prompt_words = prompt_lower.split()
@@ -160,8 +171,81 @@ def vectorize(search_query: str):
     results = table.search(query_vector).limit(5).to_list()
     best = min(results, key=lambda r: r.get("_distance", 1.0))
     record = best
+    # 
+    print([(r.get("name"), r.get("city"), r.get("_distance")) for r in results])
     return record
 
+def multi_vector_search(table, vectors, weights, top_n=10):
+    """
+    table: LanceDB table
+    vectors: list of tuples (col_name, query_vector)
+    weights: list of floats (normalized)
+    """
+    all_scores = []
+
+    for row in table:
+        score = 0
+        for (col_name, query_vec), weight in zip(vectors, weights):
+            db_vec = np.array(row.get(col_name))
+            sim = cosine_similarity([query_vec], [db_vec])[0][0]
+            score += sim * weight
+        all_scores.append((score, row))
+
+    all_scores.sort(key=lambda x: x[0], reverse=True)
+    return all_scores[:top_n]
+
+def vectorize_fn(text_or_list):
+    if isinstance(text_or_list, list):
+        if not text_or_list:
+            return [0.0] * 384  # fallback för MiniLM
+        embeddings = [embedding_model.encode(t) for t in text_or_list]
+        return np.mean(np.array(embeddings), axis=0).tolist()
+    else:
+        return embedding_model.encode(text_or_list).tolist()
+    
+    
+    
 if __name__ == "__main__":
-    prompt = "Jag vill äta kinesiskt i Göteborg"
-    extract_entities_llm(prompt)
+    prompt = "Jag vill äta kinesiskt, gärna mapo tofu i Göteborg"
+
+    data = extract_entities_llm(prompt)
+    data = json.loads(data)
+    # Extrahera sökbegrepp (enkelt exempel)
+    restaurant_name = data.get("name")
+    city = data.get("city")
+    cuisine = data.get("cuisine")
+    dishes = data.get("dishes") or []
+    drinks = data.get("drinks") or []
+    menu = (dishes or []) + (drinks or [])
+
+    # Skapa query-vektorer
+    vectors = []
+    weights = []
+
+    print(f"Söker med {data.get("city")} {data.get("dishes")}")
+    print(f"{data.get("cuisine")} {data.get("name")} {data.get("drinks")}")
+    # Borde ta bort restaurang och city och separera meny till dish och drinks
+    if menu:
+        vectors.append(("vector_menu", vectorize_fn(menu)))
+        weights.append(0.7)
+    if city:
+        vectors.append(("vector_city", vectorize_fn(city)))
+        weights.append(0.3)
+    if cuisine:
+        vectors.append(("vector_cuisine", vectorize_fn(cuisine)))
+        weights.append(0.2)
+    if restaurant_name:
+        vectors.append(("vector_restaurant", vectorize_fn(restaurant_name)))
+        weights.append(0.3)
+
+    # Normalisera vikter
+    total = sum(weights)
+    weights = [w / total for w in weights]
+
+    test = table.to_pandas().to_dict(orient="records")
+    # Sök
+    results = multi_vector_search(test, vectors, weights)
+
+    # Visa resultat
+    for r in results[:5]:
+        print(f"score={r[0]:.4f} name = {r[1].get("name")}")

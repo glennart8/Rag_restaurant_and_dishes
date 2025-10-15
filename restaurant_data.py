@@ -1,8 +1,20 @@
 RAW_RESTAURANT_DATA = [
     {
+        "id": 1,
+        "name": "Tien Tzin",
+        "city": "Göteborg",
+        "cuisine": "Kinesisk", 
+        "text": "Genuin kinesisk restaurang med autentiska rätter från Sichuanköket och kantonesiska regioner. Känd för sina dumplings och veganutbud.",
+        "menu": {
+            "dishes": ["Mapo Tofu", "General Tso Chicken", "Har Gow (Dumplings)"],
+            "drinks": ["Jasminte", "Kinesiskt Öl", "Mango Juice"]
+        }
+    },
+    {
+        "id": 2,
         "name": "Nyagi",
         "city": "Stockholm",
-        "cuisine": "Japansk",  # <--- NYTT FÄLT
+        "cuisine": "Japansk", 
         "text": "Japansk restaurang med fokus på sushi, ramen och tempura.",
         "menu": {
             "dishes": ["Sushi", "Ramen", "Tempura"],
@@ -10,9 +22,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 3,
         "name": "Sakura",
         "city": "Stockholm",
-        "cuisine": "Japansk",  # <--- NYTT FÄLT
+        "cuisine": "Japansk", 
         "text": "Udon och sashimi-specialist med traditionella japanska rätter.",
         "menu": {
             "dishes": ["Udon", "Sashimi", "Takoyaki"],
@@ -20,9 +33,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 4,
         "name": "Bistro Rådhuset",
         "city": "Stockholm",
-        "cuisine": "Fransk/Svensk",  # <--- NYTT FÄLT
+        "cuisine": "Fransk/Svensk", 
         "text": "Fransk-svensk bistro med klassiska rätter och säsongens råvaror. Perfekt för en elegant middag.",
         "menu": {
             "dishes": ["Biff Rydberg", "Moules Frites", "Råbiff"],
@@ -30,9 +44,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 5,
         "name": "Taqueria El Fuego",
         "city": "Stockholm",
-        "cuisine": "Mexikansk",  # <--- NYTT FÄLT
+        "cuisine": "Mexikansk", 
         "text": "Autentisk mexikansk taqueria med hemgjorda tortillas och kryddstarka fyllningar.",
         "menu": {
             "dishes": ["Tacos Al Pastor", "Carne Asada Burrito", "Quesadillas"],
@@ -40,9 +55,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 6,
         "name": "Pasta Fresca",
         "city": "Stockholm",
-        "cuisine": "Italiensk",  # <--- NYTT FÄLT
+        "cuisine": "Italiensk", 
         "text": "Italiensk restaurang som serverar handgjord, färsk pasta och antipasti.",
         "menu": {
             "dishes": ["Cacio e Pepe", "Lasagne Classica", "Pappardelle med tryffel"],
@@ -50,9 +66,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 7,
         "name": "Vegetariska Hörnan",
         "city": "Stockholm",
-        "cuisine": "Vegetarisk",  # <--- NYTT FÄLT
+        "cuisine": "Vegetarisk", 
         "text": "Hälsosam vegetarisk mat med inslag från hela världen. Stort utbud av sallader och bowls.",
         "menu": {
             "dishes": ["Halloumi Bowl", "Linssoppa", "Vegansk Burger"],
@@ -60,9 +77,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 8,
         "name": "Thai Palace",
         "city": "Stockholm",
-        "cuisine": "Thailändsk",  # <--- NYTT FÄLT
+        "cuisine": "Thailändsk", 
         "text": "Thailändsk mat med starka smaker och färska örter. Kända för sin Pad Thai.",
         "menu": {
             "dishes": ["Pad Thai", "Grön Curry (Gaeng Keow Wan)", "Tom Yum Soppa"],
@@ -70,9 +88,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 9,
         "name": "Grillmästarna",
         "city": "Stockholm",
-        "cuisine": "Amerikansk/Grill",  # <--- NYTT FÄLT
+        "cuisine": "Amerikansk/Grill", 
         "text": "Amerikanskinspirerad grillrestaurang specialiserad på rökta ribs och hamburgare.",
         "menu": {
             "dishes": ["Smoked BBQ Ribs", "Tryffelburgare", "Pulled Pork Sandwich"],
@@ -80,9 +99,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 10,
         "name": "Ethio Star",
         "city": "Stockholm",
-        "cuisine": "Etiopisk",  # <--- NYTT FÄLT
+        "cuisine": "Etiopisk", 
         "text": "Etiopisk restaurang som serverar traditionella grytor på den tunna brödet Injera.",
         "menu": {
             "dishes": ["Doro Wat", "Misoa", "Kik Wot (Vegan)"],
@@ -90,9 +110,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 11,
         "name": "Skärgårdsgott",
         "city": "Stockholm",
-        "cuisine": "Fisk & Skaldjur",  # <--- NYTT FÄLT
+        "cuisine": "Fisk & Skaldjur", 
         "text": "Fisk- och skaldjursrestaurang med fokus på nordiska smaker och havets delikatesser.",
         "menu": {
             "dishes": ["Räkmacka (Stor)", "Fisk- och Skaldjursgryta", "Halstrad Torsk"],
@@ -100,9 +121,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 12,
         "name": "Café Linne",
         "city": "Stockholm",
-        "cuisine": "Svensk",  # <--- NYTT FÄLT
+        "cuisine": "Svensk", 
         "text": "Ett klassiskt svenskt konditori med fika och enkla lunchrätter.",
         "menu": {
             "dishes": ["Köttbullar med mos", "Räksallad", "Pannkakor"],
@@ -110,9 +132,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 13,
         "name": "Skeppskajen",
         "city": "Göteborg",
-        "cuisine": "Fisk & Skaldjur",  # <--- NYTT FÄLT
+        "cuisine": "Fisk & Skaldjur", 
         "text": "Göteborgsk fisk- och skaldjursrestaurang med utsikt över hamnen. Kända för sina ostron.",
         "menu": {
             "dishes": ["Ostron (Färska)", "Skaldjursplatå", "Fisksoppa"],
@@ -120,9 +143,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 14,
         "name": "Masala Corner",
         "city": "Göteborg",
-        "cuisine": "Indisk",  # <--- NYTT FÄLT
+        "cuisine": "Indisk", 
         "text": "Indisk restaurang med nordindiska smaker, tandoori-rätter och naanbröd.",
         "menu": {
             "dishes": ["Chicken Tikka Masala", "Palak Paneer", "Lamb Rogan Josh"],
@@ -130,9 +154,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 15,
         "name": "Pizzaria Napoli",
         "city": "Göteborg",
-        "cuisine": "Italiensk",  # <--- NYTT FÄLT
+        "cuisine": "Italiensk", 
         "text": "Napolitansk pizzeria med vedeldad ugn och autentiska ingredienser.",
         "menu": {
             "dishes": ["Pizza Margherita", "Pizza Quattro Formaggi", "Pizza Diavola"],
@@ -140,9 +165,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 16,
         "name": "Mexi Street Food",
         "city": "Göteborg",
-        "cuisine": "Mexikansk",  # <--- NYTT FÄLT
+        "cuisine": "Mexikansk", 
         "text": "Street food-vagn/restaurang med snabba och fräscha mexikanska rätter.",
         "menu": {
             "dishes": ["Loaded Nachos", "Chili Con Carne", "Fish Tacos"],
@@ -150,9 +176,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 17,
         "name": "Koreanska Grillen",
         "city": "Göteborg",
-        "cuisine": "Koreansk",  # <--- NYTT FÄLT
+        "cuisine": "Koreansk", 
         "text": "Koreansk BBQ där du grillar vid bordet, samt klassiska Bibimbap.",
         "menu": {
             "dishes": ["Bulgogi BBQ", "Kimchi Jjigae", "Bibimbap"],
@@ -160,9 +187,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 18,
         "name": "The Burger Bar",
         "city": "Göteborg",
-        "cuisine": "Amerikansk/Burgare",  # <--- NYTT FÄLT
+        "cuisine": "Amerikansk/Burgare", 
         "text": "Specialiserad på gourmetburgare med lokala råvaror och handgjorda pommes frites.",
         "menu": {
             "dishes": ["Cheeseburger (Classic)", "Vegetarisk Halloumiburgare", "Chili Cheese Fries"],
@@ -170,9 +198,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 19,
         "name": "Vegan Världen",
         "city": "Göteborg",
-        "cuisine": "Vegansk",  # <--- NYTT FÄLT
+        "cuisine": "Vegansk", 
         "text": "Helt vegansk restaurang med kreativa rätter och fokus på hållbarhet.",
         "menu": {
             "dishes": ["Vegansk Kebabtallrik", "Rotselleribiffar", "Raw Food Tårta"],
@@ -180,9 +209,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 20,
         "name": "Lilla Kina",
         "city": "Göteborg",
-        "cuisine": "Kinesisk",  # <--- NYTT FÄLT
+        "cuisine": "Kinesisk", 
         "text": "Traditionell kinesisk restaurang med fokus på Sichuankökets hetta.",
         "menu": {
             "dishes": ["Kung Pao Chicken", "Mapo Tofu", "Peking Anka (halv)"],
@@ -190,9 +220,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 21,
         "name": "Medelhavs Drömmar",
         "city": "Göteborg",
-        "cuisine": "Grekisk/Medelhavs",  # <--- NYTT FÄLT
+        "cuisine": "Grekisk/Medelhavs", 
         "text": "Grekisk-inspirerad mat med gyros, souvlaki och meze-tallrikar.",
         "menu": {
             "dishes": ["Gyros (Fläsk)", "Souvlaki (Kyckling)", "Meze-Tallrik"],
@@ -200,9 +231,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 22,
         "name": "Saluhallen Deli",
         "city": "Göteborg",
-        "cuisine": "Svensk",  # <--- NYTT FÄLT
+        "cuisine": "Svensk", 
         "text": "Deli med fokus på svenska smörgåsar, sallader och lagrade ostar.",
         "menu": {
             "dishes": ["Landgång", "Caesarsallad", "Ost- och charkbricka"],
@@ -210,9 +242,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 23,
         "name": "Mölla Kvarteret",
         "city": "Malmö",
-        "cuisine": "Svensk/Skånsk",  # <--- NYTT FÄLT
+        "cuisine": "Svensk/Skånsk", 
         "text": "Modern svensk-skånsk mat med fokus på lokala råvaror och finess.",
         "menu": {
             "dishes": ["Skånsk Äggakaka", "Viltköttbullar", "Röding med pepparrot"],
@@ -220,9 +253,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 24,
         "name": "Falafel Time",
         "city": "Malmö",
-        "cuisine": "Mellanöstern",  # <--- NYTT FÄLT
+        "cuisine": "Mellanöstern", 
         "text": "Malmös kändaste falafelställe. Färska, krispiga falafel med goda tillbehör.",
         "menu": {
             "dishes": ["Falafel i pitabröd", "Falafelrulle (Stark)", "Sallad med falafel"],
@@ -230,9 +264,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 25,
         "name": "Pizzeria Milano",
         "city": "Malmö",
-        "cuisine": "Italiensk",  # <--- NYTT FÄLT
+        "cuisine": "Italiensk", 
         "text": "Traditionell italiensk pizzeria med tunn botten och högkvalitativa toppings.",
         "menu": {
             "dishes": ["Pizza Capricciosa", "Calzone", "Pasta Bolognese"],
@@ -240,9 +275,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 26,
         "name": "Vietnam Kitchen",
         "city": "Malmö",
-        "cuisine": "Vietnamesisk",  # <--- NYTT FÄLT
+        "cuisine": "Vietnamesisk", 
         "text": "Vietnamesisk restaurang som serverar autentisk Pho, Banh Mi och färska vårrullar.",
         "menu": {
             "dishes": ["Pho Bo (Nudelsoppa)", "Banh Mi (Smörgås)", "Färska Vårrullar"],
@@ -250,9 +286,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 27,
         "name": "Tapas Del Sol",
         "city": "Malmö",
-        "cuisine": "Spansk",  # <--- NYTT FÄLT
+        "cuisine": "Spansk", 
         "text": "Spansk tapasrestaurang med ett stort urval av smårätter och sangria.",
         "menu": {
             "dishes": ["Patatas Bravas", "Gambas al Ajillo", "Chorizo"],
@@ -260,9 +297,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 28,
         "name": "Afrikanska Grytan",
         "city": "Malmö",
-        "cuisine": "Västafrikansk",  # <--- NYTT FÄLT
+        "cuisine": "Västafrikansk", 
         "text": "Västafrikansk mat med jordnötsgrytor, risrätter och fufu.",
         "menu": {
             "dishes": ["Groundnut Soup (Jordnötssås)", "Jollof Rice", "Banku och Okra"],
@@ -270,9 +308,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 29,
         "name": "Biff & Grill",
         "city": "Malmö",
-        "cuisine": "Steakhouse/Grill",  # <--- NYTT FÄLT
+        "cuisine": "Steakhouse/Grill", 
         "text": "Steakhouse som specialiserar sig på perfekt grillade köttbitar och klassiska tillbehör.",
         "menu": {
             "dishes": ["Ryggbiff (Entrecôte)", "Lammfilé", "Potatisgratäng"],
@@ -280,9 +319,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 30,
         "name": "Den Gröna Gården",
         "city": "Malmö",
-        "cuisine": "Vegansk",  # <--- NYTT FÄLT
+        "cuisine": "Vegansk", 
         "text": "Ekologisk och vegansk/vegetarisk lunchrestaurang med fokus på råvaror från närområdet.",
         "menu": {
             "dishes": ["Dagens Veganlunch", "Salladsbuffé", "Ugnsbakad Sötpotatis"],
@@ -290,9 +330,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 31,
         "name": "Sydkinesiska Köket",
         "city": "Malmö",
-        "cuisine": "Kinesisk",  # <--- NYTT FÄLT
+        "cuisine": "Kinesisk", 
         "text": "Specialiserad på Dim Sum och kantonesiska rätter.",
         "menu": {
             "dishes": ["Har Gow (Räkdim Sum)", "Char Siu Bao", "Stekt Ris (Yangzhou)"],
@@ -300,9 +341,10 @@ RAW_RESTAURANT_DATA = [
         }
     },
     {
+        "id": 32,
         "name": "Fiskarehamnen",
         "city": "Malmö",
-        "cuisine": "Fisk & Skaldjur",  # <--- NYTT FÄLT
+        "cuisine": "Fisk & Skaldjur", 
         "text": "Fisk- och skaldjurshak med fokus på klassisk sill och rökt fisk.",
         "menu": {
             "dishes": ["Stekt sill med mos", "Rökt lax med potatissallad", "Skaldjurscocktail"],

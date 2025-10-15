@@ -5,8 +5,8 @@ class PromptStructure(BaseModel):
     name: str | None = None # standardvärdet
     city: str | None = None
     cuisine: str | None = None
-    dish: List[str] = []
-    drink: List[str] = []    
+    dishes: List[str] = []
+    drinks: List[str] = []    
 
     
 class Dish(BaseModel):

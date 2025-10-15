@@ -18,6 +18,10 @@ def run_rag_agent():
         if prompt.lower() == "q":
             break
 
+        if not prompt:
+            print("Du måste skriva något för att fortsätta.")
+            continue
+        
         # Hämta restaurang och maträtt
         record, dish = get_user_query(prompt)
         if not record:
