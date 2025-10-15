@@ -37,8 +37,7 @@ def get_user_query(prompt: str) -> tuple[str | None, str | None]:
     prompt_lower = prompt.lower()
     prompt_words = prompt_lower.split()
 
-    # --- Läs in hela tables och ta ut namnen på varje rad ---
-    # --- Försöker matcha query och listan över namn ---
+    # --- Kollar flrst om en restaurang nämns och finns i lsitan över restauranger---
     df = table.to_pandas()
     mask = df["name"].apply(lambda x: x.lower() in prompt_lower)
     record_row = df[mask]
@@ -46,10 +45,13 @@ def get_user_query(prompt: str) -> tuple[str | None, str | None]:
     # Om restaurang hittas
     if not record_row.empty:
         record = record_row.iloc[0].to_dict()
+    # Om inte, kolla maträtt i stället
     else:
         # Fallback: vektorsök
+        # Går igenom alla menyer och skapar en lista över ALLA maträtter i ALLA restauranger
         all_dishes = [dish.lower() for dishes in df["menu"].apply(lambda m: m.get("dishes", []) if m else []) for dish in dishes]
         
+        # kollar om någon av rätterna i all_dishes nämns i queryn
         mentioned_dishes = [d for d in all_dishes if any(word in d.lower() for word in prompt_words)]
         mentioned_dishes = list(dict.fromkeys(mentioned_dishes))
         
@@ -67,13 +69,13 @@ def get_user_query(prompt: str) -> tuple[str | None, str | None]:
     
     restaurant_name = record["name"]
 
-    # Hämta maträtter från menyn
+    # Hämta maträtter från menyn från vald restaurang
     dishes = record.get("menu", {}).get("dishes", [])
     
     if isinstance(dishes, np.ndarray):
         dishes = dishes.tolist()
 
-    # Kolla om någon maträtt nämns i prompten
+    # Kolla om någon maträtt som nämns i prompten finns i bland restaurangens maträtt
     dish_name = None
     for dish in dishes:
         if dish.lower() in prompt_lower:
@@ -97,10 +99,12 @@ def get_user_query(prompt: str) -> tuple[str | None, str | None]:
                     continue
                 # 
                 if dish_name_input.lower() in [d.lower() for d in dishes]:
+                    # Hittar en match
                     dish_name = dish_name_input
                     print(f"Du har beställt en {dish_name} från {restaurant_name}.")
                     return record, dish_name
                 else:
+                    # Ingen match
                     print(f"Rätten '{dish_name_input}' finns tyvärr inte.")
                     continue
         else:
